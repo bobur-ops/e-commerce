@@ -1,0 +1,39 @@
+@import '@styles/variables';
+
+.card {
+  display: flex;
+  flex-direction: column;
+}
+.card__image {
+  margin-bottom: 26px;
+  width: 394px;
+  height: 360px;
+  object-fit: cover;
+  object-position: center;
+}
+.card__category {
+  margin-bottom: 14px;
+  color: #afadb5;
+  font-size: $text-sm;
+  font-family: 'Eudoxus Sans';
+}
+.card__title {
+  color: #151411;
+  font-size: $text-md;
+  font-family: 'Eudoxus Sans';
+  font-weight: 700;
+  margin-bottom: 6px;
+  max-width: 360px;
+}
+.card__subtitle {
+  font-size: 18px;
+  color: #afadb5;
+  margin-bottom: 18px;
+}
+.card__content {
+  color: $dark;
+  font-size: 24px;
+  font-family: serif;
+  font-weight: 700;
+  font-family: 'Eudoxus Sans';
+}

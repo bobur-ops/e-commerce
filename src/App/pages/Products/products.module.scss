@@ -1,0 +1,33 @@
+@import '@styles/variables';
+
+.products {
+  &-top {
+    text-align: center;
+    padding: 90px;
+    &__title {
+      font-size: $text-xl;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    &__subtitle {
+      color: $gray;
+      font-size: $text-sm;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+  &-list {
+    &__title {
+      font-size: $text-lg;
+      font-family: 'Eudoxus Sans';
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 23px;
+      span {
+        color: $green;
+        font-size: 16px;
+      }
+    }
+  }
+}

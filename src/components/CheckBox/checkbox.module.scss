@@ -1,0 +1,28 @@
+.checkbox-container {
+  position: relative;
+}
+.checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.checkmark {
+  height: 40px;
+  width: 40px;
+  background-color: #fff;
+  box-shadow: 0px 4px 120px #afadb5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.checkmark span {
+  display: none;
+}
+.checkbox-container .checkbox:checked ~ .checkmark span {
+  display: block;
+}
+.checkmark:hover {
+  outline: 1px solid #518581;
+}

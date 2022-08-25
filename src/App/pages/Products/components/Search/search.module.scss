@@ -1,0 +1,14 @@
+.products-search {
+  display: flex;
+  gap: 57px;
+  align-items: center;
+  margin-bottom: 45px;
+  position: relative;
+  &__input {
+    flex: 1;
+  }
+  &__button {
+    position: absolute;
+    left: 850px;
+  }
+}

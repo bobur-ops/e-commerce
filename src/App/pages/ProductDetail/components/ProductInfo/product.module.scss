@@ -1,0 +1,68 @@
+@import '@styles/variables';
+
+.product-info {
+  margin-top: 100px;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  &__side {
+    img {
+      width: 600px;
+      height: 600px;
+      object-fit: contain;
+      object-position: center;
+    }
+  }
+}
+.product {
+  &__title {
+    font-family: 'Eudoxus Sans';
+    font-weight: 700;
+    font-size: $text-lg;
+    margin-bottom: 72px;
+  }
+  &-palette {
+    margin-bottom: 20px;
+    &__title {
+      font-family: 'Eudoxus Sans';
+      font-weight: 700;
+      font-size: $text-sm;
+      margin-bottom: 20px;
+    }
+    &__colors {
+      display: flex;
+    }
+    &__square {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  &__desc {
+    font-size: $text-sm;
+    line-height: 32px;
+    max-width: 590px;
+    color: $gray;
+    margin-bottom: 30px;
+    span {
+      color: $green;
+      font-size: $text-sm;
+      font-family: 'Eudoxus Sans';
+      cursor: pointer;
+    }
+  }
+  &__price {
+    font-family: 'Eudoxus Sans';
+    color: $dark;
+    font-size: $text-lg;
+    font-weight: 700;
+    margin-bottom: 50px;
+  }
+  &-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    &__btn {
+      width: 100%;
+    }
+  }
+}

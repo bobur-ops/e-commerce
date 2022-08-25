@@ -1,0 +1,31 @@
+@import '@styles/variables';
+
+.header {
+  height: 120px;
+  border-bottom: 1px solid $light-gray;
+  &__logo {
+    cursor: pointer;
+  }
+  &-navbar {
+    height: 100%;
+    display: flex;
+    gap: 60px;
+    &__item {
+      font-family: 'Eudoxus Sans';
+      list-style: none;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    &__item.active {
+      border-bottom: 3px solid $green;
+      color: $green;
+    }
+  }
+  &-profile {
+    display: flex;
+    gap: 32px;
+  }
+}
