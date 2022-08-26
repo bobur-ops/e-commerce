@@ -1,4 +1,4 @@
-@import '@styles/variables';
+@import '@styles/Variables';
 
 .product-info {
   margin-top: 100px;
@@ -16,7 +16,6 @@
 }
 .product {
   &__title {
-    font-family: 'Eudoxus Sans';
     font-weight: 700;
     font-size: $text-lg;
     margin-bottom: 72px;
@@ -24,7 +23,6 @@
   &-palette {
     margin-bottom: 20px;
     &__title {
-      font-family: 'Eudoxus Sans';
       font-weight: 700;
       font-size: $text-sm;
       margin-bottom: 20px;
@@ -46,7 +44,6 @@
     span {
       color: $green;
       font-size: $text-sm;
-      font-family: 'Eudoxus Sans';
       cursor: pointer;
     }
   }

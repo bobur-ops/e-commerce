@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import styles from './checkbox.module.css'
+import styles from './Checkbox.module.css'
 
 export type CheckBoxProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,

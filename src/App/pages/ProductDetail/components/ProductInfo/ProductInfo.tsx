@@ -3,10 +3,10 @@ import React, { useState } from 'react'
 import { Button, ButtonColor } from '@components/Button'
 import { IProduct } from '@myTypes/product'
 
-import styles from './product.module.scss'
+import styles from './Product.module.scss'
 
 interface Props {
-  data: IProduct
+  data: IProduct | null
 }
 
 const colors = ['151411', '314443', 'C5A26E', 'D8DBE0']

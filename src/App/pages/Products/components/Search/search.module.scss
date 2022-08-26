@@ -1,14 +1,24 @@
-.products-search {
+.search {
   display: flex;
-  gap: 57px;
+  gap: 30px;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 45px;
-  position: relative;
-  &__input {
+  margin-bottom: 50px;
+  &-controlls {
+    display: flex;
+    align-items: center;
+    justify-self: start;
+    background: #fff;
     flex: 1;
-  }
-  &__button {
-    position: absolute;
-    left: 850px;
+    &__icon {
+      margin-right: -45px;
+      z-index: 2;
+    }
+    &__button {
+      margin-left: -170px;
+    }
+    &__input {
+      padding-left: 60px;
+    }
   }
 }

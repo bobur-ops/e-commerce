@@ -6,7 +6,7 @@ import { IProduct } from '@myTypes/product'
 import { useParams } from 'react-router-dom'
 
 import { ProductInfo, RelatedCards } from './components'
-import styles from './productDetail.module.scss'
+import styles from './ProductDetail.module.scss'
 
 const ProductDetail = () => {
   const { id } = useParams()
@@ -15,12 +15,12 @@ const ProductDetail = () => {
     useProductContext()
 
   useEffect(() => {
-    fetchProductById(id)
+    id && fetchProductById(id)
   }, [id])
 
   return (
     <div className="container">
-      {loading && currentProduct === null ? (
+      {loading ? (
         <Loader size={LoaderSize.l} />
       ) : (
         <>

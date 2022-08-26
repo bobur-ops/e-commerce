@@ -5,7 +5,7 @@ import { useProductContext } from '@context/ProductContext'
 import { IProduct } from '@myTypes/product'
 import { Link } from 'react-router-dom'
 
-import styles from './relatedCards.module.scss'
+import styles from './RelatedCards.module.scss'
 interface Props {
   data: IProduct[]
 }
@@ -17,15 +17,14 @@ const RelatedCards: React.FC<Props> = ({ data }) => {
       <div className={styles['wrapper-cards']}>
         {data.length ? (
           data.map((el: IProduct) => (
-            <Link to={`/product/${el.id}`}>
-              <Card
-                image={el.image}
-                subtitle={el.description}
-                title={el.title}
-                category={el.category}
-                content={el.price}
-              />
-            </Link>
+            <Card
+              id={el.id}
+              image={el.image}
+              subtitle={el.description}
+              title={el.title}
+              category={el.category}
+              content={el.price}
+            />
           ))
         ) : (
           <h1 className="error-message">No data</h1>

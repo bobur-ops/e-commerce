@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 
 import {
   getProductByCategory,
@@ -8,7 +8,7 @@ import {
 } from '@api/fetchApi'
 import { IProduct, ProductContextType } from '@myTypes/product'
 
-const ProductContext = createContext<ProductContextType | null | any>(null)
+const ProductContext = createContext<ProductContextType | null>(null)
 
 export const ProductProvider = ({ children }: any) => {
   const [products, setProducts] = useState<IProduct[]>([])
@@ -18,15 +18,11 @@ export const ProductProvider = ({ children }: any) => {
   const [limit, setLimit] = useState(5)
   const [hasMore, setHasMore] = useState(true)
 
-  const changeLimit = (limitNumber: number) => {
-    setLimit(limitNumber)
-  }
-
   const fetchProducts = async () => {
     try {
       setError(false)
       setLoading(true)
-      const response: any = await getProducts()
+      const response = await getProducts()
 
       setProducts(response.data)
       setLoading(false)
@@ -39,7 +35,7 @@ export const ProductProvider = ({ children }: any) => {
     try {
       setError(false)
       setLoading(true)
-      const response: any = await getProductsWithLimit(limit)
+      const response = await getProductsWithLimit(limit)
 
       if (response.data.length < limit) {
         setHasMore(false)
@@ -55,7 +51,7 @@ export const ProductProvider = ({ children }: any) => {
     try {
       setError(false)
       setLoading(true)
-      const response: any = await getProductByCategory(category)
+      const response = await getProductByCategory(category)
 
       setProducts(response.data)
       setLoading(false)
@@ -79,7 +75,7 @@ export const ProductProvider = ({ children }: any) => {
     }
   }
 
-  const fetchProductById = async (id: number) => {
+  const fetchProductById = async (id: string) => {
     try {
       setError(false)
       setLoading(true)
@@ -101,15 +97,16 @@ export const ProductProvider = ({ children }: any) => {
         products,
         loading,
         error,
-        fetchProducts,
-        fetchProductsByCategory,
-        searchProduct,
-        fetchWithLimit,
         currentProduct,
-        fetchProductById,
         limit,
-        changeLimit,
         hasMore,
+        fetchProducts,
+        searchProduct,
+        fetchProductsByCategory,
+        fetchWithLimit,
+        fetchProductById,
+        setLimit,
+        setHasMore,
       }}
     >
       {children}
@@ -117,4 +114,12 @@ export const ProductProvider = ({ children }: any) => {
   )
 }
 
-export const useProductContext = () => useContext(ProductContext)
+export const useProductContext = () => {
+  const ctx = useContext(ProductContext)
+  if (!ctx) {
+    throw new Error(
+      'useProductContext must be called within ProductContext.Provider'
+    )
+  }
+  return ctx
+}

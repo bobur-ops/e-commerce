@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import classNames from 'classnames'
 
-import styles from './multiDropDown.module.scss'
+import styles from './MultiDropDown.module.scss'
 
 export type Option = {
   key: string

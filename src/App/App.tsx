@@ -13,7 +13,7 @@ const App = () => {
         <Header />
         <Routes>
           <Route path={APP_ROUTES.PRODUCTS} element={<Products />} />
-          <Route path="/product/:id" element={<ProductDetail />}></Route>
+          <Route path={APP_ROUTES.PRODUCT_DETAIL} element={<ProductDetail />} />
         </Routes>
       </BrowserRouter>
     </ProductProvider>

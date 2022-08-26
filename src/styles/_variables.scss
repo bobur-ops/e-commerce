@@ -11,4 +11,11 @@ $text-lg: 44px;
 $text-md: 26px;
 $text-sm: 18px;
 
+@mixin verticalEllipsis($width) {
+  width: $width;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 // mixins

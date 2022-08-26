@@ -3,7 +3,7 @@ import * as React from 'react'
 import classNames from 'classnames'
 
 import { Loader, LoaderSize } from '../Loader/Loader'
-import styles from './withloader.module.scss'
+import styles from './Withloader.module.scss'
 
 export type WithLoaderProps = React.PropsWithChildren<{
   loading: boolean

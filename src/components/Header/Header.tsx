@@ -1,15 +1,16 @@
+import { APP_ROUTES } from '@config/routes'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
 import Bag from '../../assets/img/svg/headerBag.svg'
 import Logo from '../../assets/img/svg/headerLogo.svg'
 import User from '../../assets/img/svg/headerUser.svg'
-import styles from './header.module.scss'
+import styles from './Header.module.scss'
 
 const Header = () => {
   return (
     <div className={`${styles.header} container flex-between-center`}>
-      <Link to="/" className={styles.header__logo}>
+      <Link to={APP_ROUTES.PRODUCTS} className={styles.header__logo}>
         <img src={Logo} alt="logo" />
       </Link>
       <ul className={styles[`header-navbar`]}>

@@ -14,6 +14,15 @@ export interface IProduct {
 export type ProductContextType = {
   products: IProduct[]
   loading: boolean
+  currentProduct: IProduct | null
+  limit: number
+  setLimit: Dispatch<SetStateAction<number>>
+  setHasMore: Dispatch<SetStateAction<boolean>>
+  hasMore: boolean
   error: boolean
+  searchProduct: (term: string) => void
+  fetchProductsByCategory: (category: string) => void
+  fetchWithLimit: (limit: number) => void
+  fetchProductById: (id: string) => void
   fetchProducts: () => void
 }

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import styles from './loader.module.scss'
+import styles from './Loader.module.scss'
 
 export enum LoaderSize {
   s = 's',
@@ -25,5 +25,9 @@ export const Loader: React.FC<LoaderProps> = ({
     className
   )
 
-  return loading ? <div className={loaderClass}></div> : null
+  return loading ? (
+    <div className={styles.wrapper}>
+      <span className={loaderClass}></span>
+    </div>
+  ) : null
 }

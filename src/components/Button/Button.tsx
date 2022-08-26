@@ -1,7 +1,7 @@
 import { Loader, LoaderSize } from '@components/Loader/Loader'
 import classnames from 'classnames'
 
-import styles from './button.module.scss'
+import styles from './Button.module.scss'
 
 export enum ButtonColor {
   primary = 'primary',
