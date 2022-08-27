@@ -14,11 +14,14 @@ const Products = () => {
     hasMore && fetchData()
   }, [limit])
 
-  async function fetchData() {
-    await fetchWithLimit(limit)
+  function fetchData() {
+    fetchWithLimit(limit)
 
     window.onscroll = function () {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      if (
+        window.innerHeight + window.scrollY + 5 >=
+        document.body.offsetHeight
+      ) {
         setLimit(limit + 5)
       }
     }
