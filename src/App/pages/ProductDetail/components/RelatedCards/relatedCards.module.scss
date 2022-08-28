@@ -1,0 +1,17 @@
+@import '@styles/Variables';
+
+.wrapper {
+  margin-top: 50px;
+  &-cards {
+    gap: 27px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+.related-cards__title {
+  font-size: 32px;
+  color: $dark;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin-bottom: 30px;
+}

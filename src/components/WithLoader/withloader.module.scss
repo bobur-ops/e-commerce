@@ -1,0 +1,12 @@
+.wrapper {
+  position: relative;
+}
+.wrapper__loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.wrapper.loading {
+  opacity: 0.7;
+}

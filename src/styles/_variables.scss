@@ -1,0 +1,21 @@
+// colors
+$green: #518581;
+$dark: #151411;
+$gray: #afadb5;
+$light-gray: #f3f3f3;
+$error: red;
+
+// font sizes
+$text-xl: 64px;
+$text-lg: 44px;
+$text-md: 26px;
+$text-sm: 18px;
+
+@mixin verticalEllipsis($width) {
+  width: $width;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// mixins
