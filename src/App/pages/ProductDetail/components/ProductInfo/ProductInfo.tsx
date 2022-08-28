@@ -13,7 +13,7 @@ const colors = ['151411', '314443', 'C5A26E', 'D8DBE0']
 
 const ProductInfo: React.FC<Props> = ({ data }) => {
   const [expandDesc, setExpandDesc] = useState(false)
-  if (data === null) return <></>
+  if (!data) return <div className={styles.error}>Data not found</div>
 
   return (
     <div className={styles['product-info']}>

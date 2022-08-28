@@ -25,7 +25,7 @@ const ProductDetail = () => {
       ) : (
         <>
           <ProductInfo data={currentProduct} />
-          {currentProduct !== null && (
+          {currentProduct && (
             <RelatedCards
               data={products.filter(
                 (item: IProduct) => item.id !== currentProduct.id

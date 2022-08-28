@@ -1,0 +1,10 @@
+@import '@styles/Variables';
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px;
+  color: $gray;
+  font-size: $text-sm;
+}
