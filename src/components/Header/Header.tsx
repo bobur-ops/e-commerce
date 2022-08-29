@@ -1,6 +1,6 @@
 import { APP_ROUTES } from '@config/routes'
 import classNames from 'classnames'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 import Bag from '../../assets/img/svg/headerBag.svg'
 import Logo from '../../assets/img/svg/headerLogo.svg'
@@ -10,18 +10,34 @@ import styles from './Header.module.scss'
 const Header = () => {
   return (
     <div className={`${styles.header} container flex-between-center`}>
-      <Link to={APP_ROUTES.PRODUCTS} className={styles.header__logo}>
+      <NavLink to={APP_ROUTES.PRODUCTS} className={styles.header__logo}>
         <img src={Logo} alt="logo" />
-      </Link>
+      </NavLink>
       <ul className={styles[`header-navbar`]}>
-        <li
-          className={classNames(styles['header-navbar__item'], styles.active)}
+        <NavLink
+          to="/"
+          className={({ isActive }) => `${isActive && styles.active}`}
         >
-          Product
-        </li>
-        <li className={styles['header-navbar__item']}>Services</li>
-        <li className={styles['header-navbar__item']}>Article</li>
-        <li className={styles['header-navbar__item']}>About us</li>
+          <li className={classNames(styles['header-navbar__item'])}>Product</li>
+        </NavLink>
+        <NavLink
+          to="/services"
+          className={({ isActive }) => `${isActive && styles.active}`}
+        >
+          <li className={styles['header-navbar__item']}>Services</li>
+        </NavLink>
+        <NavLink
+          to="/article"
+          className={({ isActive }) => `${isActive && styles.active}`}
+        >
+          <li className={styles['header-navbar__item']}>Article</li>
+        </NavLink>
+        <NavLink
+          to="/aboutus"
+          className={({ isActive }) => `${isActive && styles.active}`}
+        >
+          <li className={styles['header-navbar__item']}>About us</li>
+        </NavLink>
       </ul>
       <div className={styles['header-profile']}>
         <img src={Bag} alt="bag" />

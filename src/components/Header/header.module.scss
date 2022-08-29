@@ -18,8 +18,9 @@
       cursor: pointer;
       font-weight: 700;
       font-size: $text-sm;
+      color: $dark;
     }
-    &__item.active {
+    .active .header-navbar__item {
       border-bottom: 3px solid $green;
       color: $green;
     }
