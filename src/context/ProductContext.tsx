@@ -10,7 +10,11 @@ import { IProduct, ProductContextType } from '@myTypes/product'
 
 const ProductContext = createContext<ProductContextType | null>(null)
 
-export const ProductProvider = ({ children }: any) => {
+interface ProviderType {
+  children: React.ReactNode
+}
+
+export const ProductProvider: React.FC<ProviderType> = ({ children }) => {
   const [products, setProducts] = useState<IProduct[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState(false)

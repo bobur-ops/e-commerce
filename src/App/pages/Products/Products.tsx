@@ -1,28 +1,31 @@
 import { useEffect } from 'react'
 
 import { Loader, LoaderSize } from '@components/Loader'
-import { useProductContext } from '@context/ProductContext'
+import ProductStore from '@store/ProductStore'
+import { Meta } from '@utils/meta'
+import { useLocalStore } from '@utils/useLocalStore'
+import { observer } from 'mobx-react-lite'
 
 import { Cards, Search } from './components'
 import styles from './Products.module.scss'
 
 const Products = () => {
-  const { products, loading, error, fetchWithLimit, limit, setLimit, hasMore } =
-    useProductContext()
+  const { meta, products, limit, getProducts, hasMore, incrementLimit } =
+    useLocalStore(() => new ProductStore())
 
   useEffect(() => {
     hasMore && fetchData()
   }, [limit])
 
-  function fetchData() {
-    fetchWithLimit(limit)
+  const fetchData = () => {
+    getProducts()
 
     window.onscroll = function () {
       if (
-        window.innerHeight + window.scrollY + 5 >=
+        window.innerHeight + window.scrollY + 50 >=
         document.body.offsetHeight
       ) {
-        setLimit(limit + 5)
+        incrementLimit(limit + 5)
       }
     }
   }
@@ -40,9 +43,11 @@ const Products = () => {
       <div className={styles['products-list__title']}>
         Total Product <span>{products.length}</span>
       </div>
-      {error && <div className={styles.error}>Can not find any products</div>}
-      {!error && <Cards products={products} />}
-      <Loader size={LoaderSize.l} loading={loading} />
+      {meta === Meta.error && (
+        <div className={styles.error}>Can not find any products</div>
+      )}
+      {meta !== Meta.error && <Cards products={products} />}
+      <Loader size={LoaderSize.l} loading={meta === Meta.loading} />
       {!hasMore && products.length && (
         <div className={styles.error}>You've seen all data</div>
       )}
@@ -50,4 +55,4 @@ const Products = () => {
   )
 }
 
-export default Products
+export default observer(Products)

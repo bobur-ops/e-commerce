@@ -1,24 +1,20 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { getCategories } from '@api/fetchApi'
-import FilterLogo from '@assets/img/svg/filter.svg'
 import searchIcon from '@assets/img/svg/search-normal.svg'
-import { Button, ButtonColor } from '@components/Button'
+import { Button } from '@components/Button'
 import Input from '@components/Input'
 import { MultiDropdown, Option } from '@components/MultiDropdown'
 import { useProductContext } from '@context/ProductContext'
 import { IProduct } from '@myTypes/product'
+import ProductStore from '@store/ProductStore'
+import { useLocalStore } from '@utils/useLocalStore'
 
 import styles from './Search.module.scss'
 
 const Search = () => {
-  const {
-    fetchProductsByCategory,
-    fetchWithLimit,
-    searchProduct,
-    limit,
-    setHasMore,
-  } = useProductContext()
+  const { getProducts, getProductsByCategory, toggleHasMore, searchProduct } =
+    useLocalStore(() => new ProductStore())
 
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [categories, setCategories] = useState<Option[]>([])
@@ -32,9 +28,9 @@ const Search = () => {
 
   useEffect(() => {
     if (selectedCategories !== null) {
-      fetchProductsByCategory(selectedCategories.value)
+      getProductsByCategory(selectedCategories.value)
     } else {
-      fetchWithLimit(limit)
+      getProducts()
     }
   }, [selectedCategories])
 
@@ -65,10 +61,10 @@ const Search = () => {
   const onChange = (value: string) => {
     setSearchTerm(value)
     if (!value) {
-      setHasMore(true)
-      fetchWithLimit(limit)
+      toggleHasMore(true)
+      getProducts()
     } else {
-      setHasMore(false)
+      toggleHasMore(false)
     }
   }
 

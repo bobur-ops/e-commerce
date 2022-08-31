@@ -9,7 +9,8 @@
       "@context/*": ["src/context/*"],
       "@myTypes/*": ["src/@myTypes/*"],
       "@api/*": ["src/api/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@store/*": ["src/store/*"]
     }
   }
 }

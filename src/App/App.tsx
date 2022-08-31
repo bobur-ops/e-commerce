@@ -18,7 +18,7 @@ const App = () => {
           <Route path={APP_ROUTES.PRODUCT_DETAIL} element={<ProductDetail />} />
           <Route path="*" element={<Empty />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </ProductProvider>
   )
