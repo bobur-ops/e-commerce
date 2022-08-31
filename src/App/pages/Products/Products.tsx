@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import { Loader, LoaderSize } from '@components/Loader'
 import ProductStore from '@store/ProductStore'
+import { useQueryParamsStoreInit } from '@store/RootStore/hooks/useQueryParamsStoreInit'
 import { Meta } from '@utils/meta'
 import { useLocalStore } from '@utils/useLocalStore'
 import { observer } from 'mobx-react-lite'
@@ -10,6 +11,8 @@ import { Cards, Search } from './components'
 import styles from './Products.module.scss'
 
 const Products = () => {
+  useQueryParamsStoreInit()
+
   const { meta, products, limit, getProducts, hasMore, incrementLimit } =
     useLocalStore(() => new ProductStore())
 

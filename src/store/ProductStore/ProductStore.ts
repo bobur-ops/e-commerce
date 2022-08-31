@@ -5,9 +5,18 @@ import {
   linearizeCollection,
   normalizeCollection,
 } from '@store/models/shared/collection'
+import rootStore from '@store/RootStore'
 import { Meta } from '@utils/meta'
 import { ILocalStore } from '@utils/useLocalStore'
-import { action, computed, makeObservable, observable, runInAction } from 'mobx'
+import {
+  action,
+  computed,
+  IReactionDisposer,
+  makeObservable,
+  observable,
+  reaction,
+  runInAction,
+} from 'mobx'
 
 import { IProductModel } from '../models/product/ProductItem'
 import { IProductStore } from './types'
@@ -129,4 +138,12 @@ export default class ProductStore implements IProductStore, ILocalStore {
   destroy(): void {
     // nothing to do
   }
+
+  private readonly _qpReaction: IReactionDisposer = reaction(
+    () => rootStore.query.getParam('search'),
+    (search) => {
+      // eslint-disable-next-line no-console
+      console.log('Search value changed: ', search)
+    }
+  )
 }
