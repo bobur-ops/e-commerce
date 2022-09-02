@@ -1,7 +1,7 @@
 import Footer from '@components/Footer/Footer'
 import Header from '@components/Header'
 import { APP_ROUTES } from '@config/routes'
-import { ProductProvider } from '@context/ProductContext'
+import { ProductStoreProvider } from '@context/StoreContext'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import Empty from './pages/Empty/Empty'
@@ -10,7 +10,7 @@ import Products from './pages/Products'
 
 const App = () => {
   return (
-    <ProductProvider>
+    <ProductStoreProvider>
       <BrowserRouter>
         <Header />
         <Routes>
@@ -20,7 +20,7 @@ const App = () => {
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>
-    </ProductProvider>
+    </ProductStoreProvider>
   )
 }
 

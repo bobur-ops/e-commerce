@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
 import { Loader, LoaderSize } from '@components/Loader'
-import ProductStore from '@store/ProductStore'
+import { useRootStore } from '@context/StoreContext'
+import rootStore from '@store/RootStore'
 import { useQueryParamsStoreInit } from '@store/RootStore/hooks/useQueryParamsStoreInit'
 import { Meta } from '@utils/meta'
-import { useLocalStore } from '@utils/useLocalStore'
 import { observer } from 'mobx-react-lite'
 
 import { Cards, Search } from './components'
@@ -13,22 +13,23 @@ import styles from './Products.module.scss'
 const Products = () => {
   useQueryParamsStoreInit()
 
-  const { meta, products, limit, getProducts, hasMore, incrementLimit } =
-    useLocalStore(() => new ProductStore())
+  const { productStore } = useRootStore()
 
   useEffect(() => {
-    hasMore && fetchData()
-  }, [limit])
+    fetchData()
+    const search = rootStore.query.getParam('search')
+  }, [])
 
   const fetchData = () => {
-    getProducts()
+    productStore.getProducts()
 
     window.onscroll = function () {
       if (
         window.innerHeight + window.scrollY + 50 >=
-        document.body.offsetHeight
+          document.body.offsetHeight &&
+        productStore.meta !== Meta.loading
       ) {
-        incrementLimit(limit + 5)
+        productStore.fetchMore()
       }
     }
   }
@@ -44,14 +45,19 @@ const Products = () => {
       </div>
       <Search />
       <div className={styles['products-list__title']}>
-        Total Product <span>{products.length}</span>
+        Total Product <span>{productStore.products.length}</span>
       </div>
-      {meta === Meta.error && (
+      {productStore.meta === Meta.error && (
         <div className={styles.error}>Can not find any products</div>
       )}
-      {meta !== Meta.error && <Cards products={products} />}
-      <Loader size={LoaderSize.l} loading={meta === Meta.loading} />
-      {!hasMore && products.length && (
+      {productStore.meta !== Meta.error && (
+        <Cards products={productStore.products} />
+      )}
+      <Loader
+        size={LoaderSize.l}
+        loading={productStore.meta === Meta.loading}
+      />
+      {!productStore.hasMore && productStore.products.length && (
         <div className={styles.error}>You've seen all data</div>
       )}
     </div>

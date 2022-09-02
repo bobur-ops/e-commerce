@@ -48,6 +48,7 @@ export default class ProductStore implements IProductStore, ILocalStore {
       getProductsByCategory: action.bound,
       toggleHasMore: action.bound,
       searchProduct: action.bound,
+      fetchMore: action.bound,
     })
   }
 
@@ -67,22 +68,25 @@ export default class ProductStore implements IProductStore, ILocalStore {
     return this._limit
   }
 
-  async getProducts(): Promise<void> {
+  getProducts = async (): Promise<void> => {
     this._meta = Meta.loading
 
     try {
-      const response = await getProductsWithLimit(this.limit)
+      const response = await getProductsWithLimit(this._limit)
       runInAction(() => {
-        if (response.data.length < this.limit) {
+        if (response.data.length < this._limit) {
           this._hasMore = false
         }
-
         this._meta = Meta.success
         this._products = normalizeCollection(
           response.data,
           (listItem) => listItem.id
         )
       })
+      const searchTerm = rootStore.query.getParam('search')
+      if (searchTerm) {
+        this.searchProduct()
+      }
     } catch (error) {
       runInAction(() => {
         this._meta = Meta.error
@@ -91,7 +95,7 @@ export default class ProductStore implements IProductStore, ILocalStore {
     }
   }
 
-  async getProductsByCategory(category: string): Promise<void> {
+  getProductsByCategory = async (category: string): Promise<void> => {
     this._meta = Meta.loading
 
     try {
@@ -113,37 +117,43 @@ export default class ProductStore implements IProductStore, ILocalStore {
     }
   }
 
-  searchProduct(searchTerm: string): void {
-    this._meta = Meta.initial
+  searchProduct = (): void => {
+    const searchTerm = rootStore.query.getParam('search')
     if (searchTerm) {
       const newProducts = linearizeCollection(this._products).filter(
-        (item: IProductModel) =>
-          item.title.toLocaleLowerCase().includes(searchTerm.toLowerCase())
+        (product) =>
+          product.title
+            .toLowerCase()
+            .includes(searchTerm.toString().toLowerCase())
       )
-      this._products = normalizeCollection(
-        newProducts,
-        (listItem) => listItem.id
-      )
+
+      if (newProducts.length) {
+        this._products = normalizeCollection(
+          newProducts,
+          (listItem) => listItem.id
+        )
+      } else {
+        this._meta = Meta.error
+      }
     }
   }
 
-  incrementLimit(newValue: number): void {
-    this._limit = newValue
+  fetchMore = (): void => {
+    this._limit = this._limit + 5
+    if (this._hasMore && this._meta !== Meta.loading) {
+      this.getProducts()
+    }
   }
 
-  toggleHasMore(newValue: boolean): void {
+  incrementLimit = (): void => {
+    this._limit = this._limit + 5
+  }
+
+  toggleHasMore = (newValue: boolean): void => {
     this._hasMore = newValue
   }
 
   destroy(): void {
     // nothing to do
   }
-
-  private readonly _qpReaction: IReactionDisposer = reaction(
-    () => rootStore.query.getParam('search'),
-    (search) => {
-      // eslint-disable-next-line no-console
-      console.log('Search value changed: ', search)
-    }
-  )
 }
