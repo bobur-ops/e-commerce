@@ -1,34 +1,34 @@
 import { useEffect } from 'react'
 
 import { Loader, LoaderSize } from '@components/Loader'
-import { useProductContext } from '@context/ProductContext'
+import { useRootStore } from '@context/StoreContext'
 import { IProduct } from '@myTypes/product'
+import { Meta } from '@utils/meta'
+import { observer } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
 
 import { ProductInfo, RelatedCards } from './components'
-import styles from './ProductDetail.module.scss'
 
 const ProductDetail = () => {
   const { id } = useParams()
-
-  const { products, currentProduct, loading, error, fetchProductById } =
-    useProductContext()
+  const { productDetailStore } = useRootStore()
 
   useEffect(() => {
-    id && fetchProductById(id)
+    id && productDetailStore.getProductById(id)
   }, [id])
 
   return (
     <div className="container">
-      {loading ? (
+      {productDetailStore.meta === Meta.loading ? (
         <Loader size={LoaderSize.l} />
       ) : (
         <>
-          <ProductInfo data={currentProduct} />
-          {currentProduct && (
+          <ProductInfo data={productDetailStore.currentProduct} />
+          {productDetailStore.currentProduct && (
             <RelatedCards
-              data={products.filter(
-                (item: IProduct) => item.id !== currentProduct.id
+              data={productDetailStore.relatedProducts.filter(
+                (item: IProduct) =>
+                  item.id !== productDetailStore.currentProduct?.id
               )}
             />
           )}
@@ -38,4 +38,4 @@ const ProductDetail = () => {
   )
 }
 
-export default ProductDetail
+export default observer(ProductDetail)

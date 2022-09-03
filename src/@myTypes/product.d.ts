@@ -1,3 +1,4 @@
+import ProductDetailStore from '@store/ProductDetailStore'
 import ProductStore from '@store/ProductStore'
 
 export interface IProduct {
@@ -31,4 +32,5 @@ export type ProductContextType = {
 
 export type StoreContextType = {
   productStore: ProductStore
+  productDetailStore: ProductDetailStore
 }

@@ -8,15 +8,7 @@ import {
 import rootStore from '@store/RootStore'
 import { Meta } from '@utils/meta'
 import { ILocalStore } from '@utils/useLocalStore'
-import {
-  action,
-  computed,
-  IReactionDisposer,
-  makeObservable,
-  observable,
-  reaction,
-  runInAction,
-} from 'mobx'
+import { action, computed, makeObservable, observable, runInAction } from 'mobx'
 
 import { IProductModel } from '../models/product/ProductItem'
 import { IProductStore } from './types'
@@ -44,7 +36,6 @@ export default class ProductStore implements IProductStore, ILocalStore {
       hasMore: computed,
       // actions
       getProducts: action.bound,
-      incrementLimit: action.bound,
       getProductsByCategory: action.bound,
       toggleHasMore: action.bound,
       searchProduct: action.bound,
@@ -143,10 +134,6 @@ export default class ProductStore implements IProductStore, ILocalStore {
     if (this._hasMore && this._meta !== Meta.loading) {
       this.getProducts()
     }
-  }
-
-  incrementLimit = (): void => {
-    this._limit = this._limit + 5
   }
 
   toggleHasMore = (newValue: boolean): void => {
