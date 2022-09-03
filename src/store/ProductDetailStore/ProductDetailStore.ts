@@ -8,7 +8,13 @@ import {
 } from '@store/models/shared/collection'
 import { Meta } from '@utils/meta'
 import { ILocalStore } from '@utils/useLocalStore'
-import { makeAutoObservable, observable, runInAction } from 'mobx'
+import {
+  action,
+  computed,
+  makeAutoObservable,
+  observable,
+  runInAction,
+} from 'mobx'
 
 import { IProductDetailStore } from './types'
 
@@ -28,6 +34,13 @@ export default class ProductDetailStore
       _currentProduct: observable,
       _meta: observable,
       _relatedProducts: observable.ref,
+      // computed
+      currentProduct: computed,
+      meta: computed,
+      relatedProducts: computed,
+      // actions
+      getProductById: action.bound,
+      getRelatedProducts: action.bound,
     })
   }
 
@@ -48,8 +61,8 @@ export default class ProductDetailStore
 
     try {
       const response = await getProductById(id)
-      runInAction(async () => {
-        await this.getRelatedProducts(response.data.category)
+      await this.getRelatedProducts(response.data.category)
+      runInAction(() => {
         this._meta = Meta.success
         this._currentProduct = response.data
       })

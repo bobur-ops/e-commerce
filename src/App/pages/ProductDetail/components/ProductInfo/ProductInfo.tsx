@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { Button, ButtonColor } from '@components/Button'
 import { IProduct } from '@myTypes/product'
+import { observer } from 'mobx-react-lite'
 
 import styles from './Product.module.scss'
 
@@ -57,4 +58,4 @@ const ProductInfo: React.FC<Props> = ({ data }) => {
   )
 }
 
-export default ProductInfo
+export default observer(ProductInfo)
