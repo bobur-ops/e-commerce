@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
+import { getProducts } from '@api/fetchApi'
 import { Loader, LoaderSize } from '@components/Loader'
 import { useRootStore } from '@context/StoreContext'
-import rootStore from '@store/RootStore'
 import { useQueryParamsStoreInit } from '@store/RootStore/hooks/useQueryParamsStoreInit'
 import { Meta } from '@utils/meta'
 import { observer } from 'mobx-react-lite'
@@ -13,15 +13,18 @@ import styles from './Products.module.scss'
 const Products = () => {
   useQueryParamsStoreInit()
 
+  const [totalProductsLength, setTotalProductsLength] = useState<number>(0)
+
   const { productStore } = useRootStore()
 
   useEffect(() => {
     fetchData()
-    const search = rootStore.query.getParam('search')
   }, [])
 
-  const fetchData = () => {
+  const fetchData = async () => {
     productStore.getProducts()
+    const response = await getProducts()
+    setTotalProductsLength(response.data.length)
 
     window.onscroll = function () {
       if (
@@ -45,7 +48,7 @@ const Products = () => {
       </div>
       <Search />
       <div className={styles['products-list__title']}>
-        Total Product <span>{productStore.products.length}</span>
+        Total Product <span>{totalProductsLength}</span>
       </div>
       {productStore.meta === Meta.error && (
         <div className={styles.error}>Can not find any products</div>

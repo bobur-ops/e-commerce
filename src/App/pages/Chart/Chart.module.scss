@@ -1,0 +1,13 @@
+@import '@styles/Variables';
+.chart {
+  &-title {
+    padding: 20px 0;
+    margin-bottom: 15px;
+    font-size: $text-lg;
+    font-weight: 700;
+  }
+  &-content {
+    display: flex;
+    gap: 20px;
+  }
+}

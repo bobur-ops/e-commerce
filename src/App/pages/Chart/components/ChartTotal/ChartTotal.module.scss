@@ -1,0 +1,26 @@
+@import '@styles/Variables';
+.total {
+  font-size: $text-sm;
+  border: 2px solid #f3f3f3;
+  border-radius: 10px;
+  padding: 25px;
+  &-field {
+    justify-content: space-between;
+    display: flex;
+    gap: 150px;
+    align-items: center;
+    margin-bottom: 10px;
+    &__result {
+      font-weight: 700;
+      width: 80px;
+    }
+  }
+  &-actions {
+    margin-top: 20px;
+    &__btn {
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+  }
+}

@@ -29,4 +29,21 @@
     display: flex;
     gap: 32px;
   }
+  &-cart {
+    position: relative;
+    &__total {
+      background: $green;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      color: $light-gray;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      position: absolute;
+      font-size: 14px;
+      top: -10px;
+      right: -12px;
+    }
+  }
 }

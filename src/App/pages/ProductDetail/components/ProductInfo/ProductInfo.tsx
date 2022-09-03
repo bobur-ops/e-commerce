@@ -1,20 +1,30 @@
 import React, { useState } from 'react'
 
 import { Button, ButtonColor } from '@components/Button'
-import { IProduct } from '@myTypes/product'
+import { useRootStore } from '@context/StoreContext'
+import {
+  IChartProduct,
+  normalizeChartProduct,
+} from '@store/models/chartProduct'
+import { IProductModel } from '@store/models/product'
 import { observer } from 'mobx-react-lite'
 
 import styles from './Product.module.scss'
 
 interface Props {
-  data: IProduct | null
+  data: IProductModel | null
 }
 
 const colors = ['151411', '314443', 'C5A26E', 'D8DBE0']
 
 const ProductInfo: React.FC<Props> = ({ data }) => {
   const [expandDesc, setExpandDesc] = useState(false)
+  const { chartStore } = useRootStore()
   if (!data) return <div className={styles.error}>Data not found</div>
+
+  const isInCart = chartStore.chartProducts.some(
+    (el: IChartProduct) => data.id === el.id
+  )
 
   return (
     <div className={styles['product-info']}>
@@ -47,10 +57,13 @@ const ProductInfo: React.FC<Props> = ({ data }) => {
         <div className={styles['product-actions']}>
           <Button className={styles['product-actions__btn']}>Buy Now</Button>
           <Button
+            onClick={() =>
+              chartStore.changeProductChart(normalizeChartProduct(data))
+            }
             className={styles['product-actions__btn']}
             color={ButtonColor.secondary}
           >
-            Add to Chart
+            {isInCart ? 'Remove from Chart' : 'Add to Chart'}
           </Button>
         </div>
       </div>

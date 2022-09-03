@@ -1,3 +1,4 @@
+import ChartStore from '@store/ChartStore'
 import ProductDetailStore from '@store/ProductDetailStore'
 import ProductStore from '@store/ProductStore'
 
@@ -33,4 +34,5 @@ export type ProductContextType = {
 export type StoreContextType = {
   productStore: ProductStore
   productDetailStore: ProductDetailStore
+  chartStore: ChartStore
 }

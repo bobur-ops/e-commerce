@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react'
 
 import { StoreContextType } from '@myTypes/product'
+import ChartStore from '@store/ChartStore'
 import ProductDetailStore from '@store/ProductDetailStore'
 import ProductStore from '@store/ProductStore'
 import { useLocalStore } from '@utils/useLocalStore'
@@ -14,9 +15,12 @@ type StoreProviderType = {
 export const StoreProvider: React.FC<StoreProviderType> = ({ children }) => {
   const productStore = useLocalStore(() => new ProductStore())
   const productDetailStore = useLocalStore(() => new ProductDetailStore())
+  const chartStore = useLocalStore(() => new ChartStore())
 
   return (
-    <StoreContext.Provider value={{ productStore, productDetailStore }}>
+    <StoreContext.Provider
+      value={{ productStore, productDetailStore, chartStore }}
+    >
       {children}
     </StoreContext.Provider>
   )

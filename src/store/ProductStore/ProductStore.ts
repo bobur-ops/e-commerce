@@ -1,4 +1,8 @@
-import { getProductByCategory, getProductsWithLimit } from '@api/fetchApi'
+import {
+  getProductByCategory,
+  getProducts,
+  getProductsWithLimit,
+} from '@api/fetchApi'
 import {
   CollectionModel,
   getInitialCollectionModel,
