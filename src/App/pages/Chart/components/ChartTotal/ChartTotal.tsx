@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Button, ButtonColor } from '@components/Button'
+import { observer } from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './ChartTotal.module.scss'
@@ -46,4 +47,4 @@ const ChartTotal: React.FC<ChartTotalType> = ({
   )
 }
 
-export default ChartTotal
+export default observer(ChartTotal)

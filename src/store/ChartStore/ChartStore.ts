@@ -6,7 +6,14 @@ import {
   normalizeCollection,
 } from '@store/models/shared/collection'
 import { ILocalStore } from '@utils/useLocalStore'
-import { action, computed, makeObservable, observable, reaction } from 'mobx'
+import {
+  action,
+  computed,
+  IReactionDisposer,
+  makeObservable,
+  observable,
+  reaction,
+} from 'mobx'
 
 import { IChartStore } from './types'
 
@@ -38,7 +45,6 @@ export default class ChartStore implements IChartStore, ILocalStore {
         localStorage.chartProducts = JSON.stringify(linearizeCollection(data))
       }
     )
-    // this._autosaveToLocalStorage()
   }
 
   get chartProducts(): IChartProduct[] {
@@ -104,16 +110,5 @@ export default class ChartStore implements IChartStore, ILocalStore {
     )
   }
 
-  destroy() {
-    // this._autosaveToLocalStorage()
-  }
-
-  // private readonly _autosaveToLocalStorage = reaction(
-  //   () => this._chartProducts,
-  //   (data) => {
-  //     // eslint-disable-next-line no-console
-  //     console.log('Reaction', data)
-  //     // localStorage.setItem('_chartProducts', JSON.stringify(products))
-  //   }
-  // )
+  destroy(): void {}
 }
