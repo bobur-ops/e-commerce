@@ -29,7 +29,7 @@ export default class ChartStore implements IChartStore, ILocalStore {
   constructor() {
     makeObservable<ChartStore, PrivateFields>(this, {
       // observables
-      _chartProducts: observable.ref,
+      _chartProducts: observable,
       // computed
       chartProducts: computed,
       totalPrice: computed,
@@ -66,48 +66,29 @@ export default class ChartStore implements IChartStore, ILocalStore {
   changeProductChart = (product: IChartProduct): void => {
     const products = linearizeCollection(this._chartProducts)
 
-    let isNew = true
-    for (var i = 0; i < products.length; i++) {
-      if (products[i].id === product.id) isNew = false
-    }
-    if (isNew) {
-      const newProducts = [...products, product]
-      this._chartProducts = normalizeCollection(
-        newProducts,
-        (listItem) => listItem.id
-      )
-    } else {
-      const newProducts = products.filter(
-        (el: IChartProduct) => el.id !== product.id
-      )
-      this._chartProducts = normalizeCollection(
-        newProducts,
-        (listItem) => listItem.id
-      )
-    }
+    // eslint-disable-next-line no-console
+    console.log(products.some((el: IChartProduct) => el.id === product.id))
+
+    const isProductInList = products.some(
+      (el: IChartProduct) => el.id === product.id
+    )
+
+    const updatedList = isProductInList
+      ? products.filter((el: IChartProduct) => el.id !== product.id)
+      : [...products, product]
+    this._chartProducts = normalizeCollection(
+      updatedList,
+      (listItem) => listItem.id
+    )
   }
 
   increaseItemCount = (id: number) => {
-    const products = linearizeCollection(this._chartProducts)
-    const newProducts = products.map((el: IChartProduct) => ({
-      ...el,
-      quantity: id === el.id ? el.quantity + 1 : el.quantity,
-    }))
-    this._chartProducts = normalizeCollection(
-      newProducts,
-      (listItem) => listItem.id
-    )
+    this._chartProducts.entities[id].quantity += 1
   }
   decreaseItemCount = (id: number) => {
-    const products = linearizeCollection(this._chartProducts)
-    const newProducts = products.map((el: IChartProduct) => ({
-      ...el,
-      quantity: id === el.id && el.quantity > 1 ? el.quantity - 1 : el.quantity,
-    }))
-    this._chartProducts = normalizeCollection(
-      newProducts,
-      (listItem) => listItem.id
-    )
+    if (this._chartProducts.entities[id].quantity > 1) {
+      this._chartProducts.entities[id].quantity -= 1
+    }
   }
 
   destroy(): void {}

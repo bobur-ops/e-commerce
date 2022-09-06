@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { Button, ButtonColor } from '@components/Button'
-import { useRootStore } from '@context/StoreContext'
+import { useGlobalStore } from '@context/GlobalContext'
 import {
   IChartProduct,
   normalizeChartProduct,
@@ -19,7 +19,7 @@ const colors = ['151411', '314443', 'C5A26E', 'D8DBE0']
 
 const ProductInfo: React.FC<Props> = ({ data }) => {
   const [expandDesc, setExpandDesc] = useState(false)
-  const { chartStore } = useRootStore()
+  const { chartStore } = useGlobalStore()
   if (!data) return <div className={styles.error}>Data not found</div>
 
   const isInCart = chartStore.chartProducts.some(

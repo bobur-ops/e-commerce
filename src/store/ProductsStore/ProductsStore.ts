@@ -17,22 +17,24 @@ import { action, computed, makeObservable, observable, runInAction } from 'mobx'
 import { IProductModel } from '../models/product/ProductItem'
 import { IProductStore } from './types'
 
-type PrivateFields = '_products' | '_meta' | '_hasMore' | '_limit'
+type PrivateFields = '_products' | '_meta' | '_hasMore' | '_limit' | '_length'
 
-export default class ProductStore implements IProductStore, ILocalStore {
+export default class ProductsStore implements IProductStore, ILocalStore {
   private _products: CollectionModel<number, IProductModel> =
     getInitialCollectionModel()
   private _meta: Meta = Meta.initial
   private _limit: number = 5
   private _hasMore: boolean = true
+  private _length: number = 0
 
   constructor() {
-    makeObservable<ProductStore, PrivateFields>(this, {
+    makeObservable<ProductsStore, PrivateFields>(this, {
       // observables
       _products: observable.ref,
       _meta: observable,
       _limit: observable,
       _hasMore: observable,
+      _length: observable,
       // computeds
       products: computed,
       meta: computed,
@@ -51,6 +53,10 @@ export default class ProductStore implements IProductStore, ILocalStore {
     return linearizeCollection(this._products)
   }
 
+  get totalProductsLength(): number {
+    return this._length
+  }
+
   get meta(): Meta {
     return this._meta
   }
@@ -63,25 +69,41 @@ export default class ProductStore implements IProductStore, ILocalStore {
     return this._limit
   }
 
+  getProductsLength = async (): Promise<number> => {
+    const response = await getProducts()
+
+    return response.data.length
+  }
+
   getProducts = async (): Promise<void> => {
     this._meta = Meta.loading
 
     try {
       const response = await getProductsWithLimit(this._limit)
+      if (this._length === 0) {
+        const forLength = await getProducts()
+        this._length = forLength.data.length
+      }
       runInAction(() => {
         if (response.data.length < this._limit) {
           this._hasMore = false
         }
         this._meta = Meta.success
-        this._products = normalizeCollection(
-          response.data,
-          (listItem) => listItem.id
-        )
+
+        const searchTerm = rootStore.query.getParam('search')
+        if (searchTerm) {
+          const filteredData = this.searchProduct(response.data)
+          this._products = normalizeCollection(
+            filteredData,
+            (listItem) => listItem.id
+          )
+        } else {
+          this._products = normalizeCollection(
+            response.data,
+            (listItem) => listItem.id
+          )
+        }
       })
-      const searchTerm = rootStore.query.getParam('search')
-      if (searchTerm) {
-        this.searchProduct()
-      }
     } catch (error) {
       runInAction(() => {
         this._meta = Meta.error
@@ -99,10 +121,20 @@ export default class ProductStore implements IProductStore, ILocalStore {
 
       runInAction(() => {
         this._meta = Meta.success
-        this._products = normalizeCollection(
-          response.data,
-          (listItem) => listItem.id
-        )
+
+        const searchTerm = rootStore.query.getParam('search')
+        if (searchTerm) {
+          const filteredData = this.searchProduct(response.data)
+          this._products = normalizeCollection(
+            filteredData,
+            (listItem) => listItem.id
+          )
+        } else {
+          this._products = normalizeCollection(
+            response.data,
+            (listItem) => listItem.id
+          )
+        }
       })
     } catch (error) {
       runInAction(() => {
@@ -112,25 +144,18 @@ export default class ProductStore implements IProductStore, ILocalStore {
     }
   }
 
-  searchProduct = (): void => {
+  searchProduct = (data: IProductModel[]): IProductModel[] => {
+    let newProducts: IProductModel[] = []
     const searchTerm = rootStore.query.getParam('search')
     if (searchTerm) {
-      const newProducts = linearizeCollection(this._products).filter(
-        (product) =>
-          product.title
-            .toLowerCase()
-            .includes(searchTerm.toString().toLowerCase())
+      newProducts = data.filter((product) =>
+        product.title
+          .toLowerCase()
+          .includes(searchTerm.toString().toLowerCase())
       )
-
-      if (newProducts.length) {
-        this._products = normalizeCollection(
-          newProducts,
-          (listItem) => listItem.id
-        )
-      } else {
-        this._meta = Meta.error
-      }
     }
+
+    return newProducts
   }
 
   fetchMore = (): void => {

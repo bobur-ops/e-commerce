@@ -1,6 +1,4 @@
-import ChartStore from '@store/ChartStore'
-import ProductDetailStore from '@store/ProductDetailStore'
-import ProductStore from '@store/ProductStore'
+import rootStore from '@store/RootStore/instance'
 
 export interface IProduct {
   id: number
@@ -31,8 +29,6 @@ export type ProductContextType = {
   fetchProducts: () => void
 }
 
-export type StoreContextType = {
-  productStore: ProductStore
-  productDetailStore: ProductDetailStore
-  chartStore: ChartStore
+export type GlobalContextType = {
+  chartStore: rootStore.chart
 }

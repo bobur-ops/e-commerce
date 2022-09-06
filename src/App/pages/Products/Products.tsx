@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
-import { getProducts } from '@api/fetchApi'
 import { Loader, LoaderSize } from '@components/Loader'
-import { useRootStore } from '@context/StoreContext'
+import { ProductsStoreContext } from '@context/ProductsContext'
+import ProductStore from '@store/ProductsStore'
 import { useQueryParamsStoreInit } from '@store/RootStore/hooks/useQueryParamsStoreInit'
 import { Meta } from '@utils/meta'
+import { useLocalStore } from '@utils/useLocalStore'
 import { observer } from 'mobx-react-lite'
 
 import { Cards, Search } from './components'
@@ -13,9 +14,7 @@ import styles from './Products.module.scss'
 const Products = () => {
   useQueryParamsStoreInit()
 
-  const [totalProductsLength, setTotalProductsLength] = useState<number>(0)
-
-  const { productStore } = useRootStore()
+  const productStore = useLocalStore(() => new ProductStore())
 
   useEffect(() => {
     fetchData()
@@ -23,8 +22,6 @@ const Products = () => {
 
   const fetchData = async () => {
     productStore.getProducts()
-    const response = await getProducts()
-    setTotalProductsLength(response.data.length)
 
     window.onscroll = function () {
       if (
@@ -38,32 +35,34 @@ const Products = () => {
   }
 
   return (
-    <div className="container">
-      <div className={styles['products-top']}>
-        <div className={styles['products-top__title']}>Products</div>
-        <div className={styles['products-top__subtitle']}>
-          We display products based on the latest products we have, if you want
-          to see our old products please enter the name of the item
+    <ProductsStoreContext.Provider value={productStore}>
+      <div className="container">
+        <div className={styles['products-top']}>
+          <div className={styles['products-top__title']}>Products</div>
+          <div className={styles['products-top__subtitle']}>
+            We display products based on the latest products we have, if you
+            want to see our old products please enter the name of the item
+          </div>
         </div>
+        <Search />
+        <div className={styles['products-list__title']}>
+          Total Product <span>{productStore.totalProductsLength}</span>
+        </div>
+        {!productStore.products.length && productStore.meta !== Meta.loading ? (
+          <div className={styles.error}>Can not find any products</div>
+        ) : null}
+        {productStore.meta !== Meta.error ? (
+          <Cards products={productStore.products} />
+        ) : null}
+        <Loader
+          size={LoaderSize.l}
+          loading={productStore.meta === Meta.loading}
+        />
+        {!productStore.hasMore && productStore.products.length ? (
+          <div className={styles.error}>You've seen all data</div>
+        ) : null}
       </div>
-      <Search />
-      <div className={styles['products-list__title']}>
-        Total Product <span>{totalProductsLength}</span>
-      </div>
-      {productStore.meta === Meta.error && (
-        <div className={styles.error}>Can not find any products</div>
-      )}
-      {productStore.meta !== Meta.error && (
-        <Cards products={productStore.products} />
-      )}
-      <Loader
-        size={LoaderSize.l}
-        loading={productStore.meta === Meta.loading}
-      />
-      {!productStore.hasMore && productStore.products.length && (
-        <div className={styles.error}>You've seen all data</div>
-      )}
-    </div>
+    </ProductsStoreContext.Provider>
   )
 }
 

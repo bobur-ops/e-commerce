@@ -1,14 +1,13 @@
 import React from 'react'
 
-import { useRootStore } from '@context/StoreContext'
-import { IChartProduct } from '@store/models/chartProduct'
+import { useGlobalStore } from '@context/GlobalContext'
 import { observer } from 'mobx-react-lite'
 
 import styles from './Chart.module.scss'
 import { ChartList, ChartTotal } from './components'
 
 const Chart = () => {
-  const { chartStore } = useRootStore()
+  const { chartStore } = useGlobalStore()
 
   return (
     <div className="container">
@@ -17,12 +16,10 @@ const Chart = () => {
         {chartStore.chartProducts.length ? (
           <>
             <ChartList
-              increaseCount={(id: number) => chartStore.increaseItemCount(id)}
-              decreaseCount={(id: number) => chartStore.decreaseItemCount(id)}
+              increaseCount={chartStore.increaseItemCount}
+              decreaseCount={chartStore.decreaseItemCount}
               data={chartStore.chartProducts}
-              deleteItem={(product: IChartProduct) =>
-                chartStore.changeProductChart(product)
-              }
+              deleteItem={chartStore.changeProductChart}
             />
             <ChartTotal
               productsLength={chartStore.chartProducts.length}

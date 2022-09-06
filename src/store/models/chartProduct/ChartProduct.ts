@@ -10,11 +10,8 @@ export interface IChartProduct {
 
 export const normalizeChartProduct = (item: IProductModel) => {
   const result = {
-    image: item.image,
-    title: item.title,
+    ...item,
     quantity: 1,
-    id: item.id,
-    price: item.price,
   }
   return result
 }

@@ -1,5 +1,5 @@
 import { APP_ROUTES } from '@config/routes'
-import { useRootStore } from '@context/StoreContext'
+import { useGlobalStore } from '@context/GlobalContext'
 import classNames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { Link, NavLink } from 'react-router-dom'
@@ -10,7 +10,7 @@ import User from '../../assets/img/svg/headerUser.svg'
 import styles from './Header.module.scss'
 
 const Header = () => {
-  const { chartStore } = useRootStore()
+  const { chartStore } = useGlobalStore()
 
   return (
     <div className={`${styles.header} container flex-between-center`}>

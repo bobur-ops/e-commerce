@@ -1,7 +1,7 @@
 import Footer from '@components/Footer/Footer'
 import Header from '@components/Header'
 import { APP_ROUTES } from '@config/routes'
-import { StoreProvider } from '@context/StoreContext'
+import { GlobalContextProvider } from '@context/GlobalContext'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import Chart from './pages/Chart/Chart'
@@ -11,7 +11,7 @@ import Products from './pages/Products'
 
 const App = () => {
   return (
-    <StoreProvider>
+    <GlobalContextProvider>
       <BrowserRouter>
         <Header />
         <Routes>
@@ -20,9 +20,8 @@ const App = () => {
           <Route path={APP_ROUTES.CHART} element={<Chart />} />
           <Route path="*" element={<Empty />} />
         </Routes>
-        {/* <Footer /> */}
       </BrowserRouter>
-    </StoreProvider>
+    </GlobalContextProvider>
   )
 }
 

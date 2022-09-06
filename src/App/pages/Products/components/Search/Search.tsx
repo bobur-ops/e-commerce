@@ -5,7 +5,7 @@ import searchIcon from '@assets/img/svg/search-normal.svg'
 import { Button } from '@components/Button'
 import Input from '@components/Input'
 import { MultiDropdown, Option } from '@components/MultiDropdown'
-import { useRootStore } from '@context/StoreContext'
+import { useProductsStore } from '@context/ProductsContext'
 import { Meta } from '@utils/meta'
 import { observer } from 'mobx-react-lite'
 import { useSearchParams } from 'react-router-dom'
@@ -13,7 +13,7 @@ import { useSearchParams } from 'react-router-dom'
 import styles from './Search.module.scss'
 
 const Search = () => {
-  const { productStore } = useRootStore()
+  const productStore = useProductsStore()
 
   const [categories, setCategories] = useState<Option[]>([])
   const [selectedCategories, setSelectedCategories] = useState<Option | null>(
@@ -54,8 +54,11 @@ const Search = () => {
   const switchCategory = useCallback(
     (value: Option) => {
       if (value.key !== selectedCategories?.key) {
+        productStore.toggleHasMore(false)
+
         setSelectedCategories(value)
       } else {
+        productStore.toggleHasMore(true)
         setSelectedCategories(null)
       }
     },
@@ -89,7 +92,7 @@ const Search = () => {
         />
         <Button
           className={styles['search-controlls__button']}
-          onClick={() => productStore.searchProduct()}
+          onClick={() => productStore.getProducts()}
         >
           Find Now
         </Button>
