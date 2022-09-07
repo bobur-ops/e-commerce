@@ -14,6 +14,7 @@ const Cards: React.FC<CardsType> = ({ products }) => {
     <div className={styles.cards}>
       {products.map((product: IProduct) => (
         <Card
+          key={product.id}
           id={product.id}
           image={product.image}
           title={product.title}

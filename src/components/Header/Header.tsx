@@ -1,5 +1,7 @@
 import { APP_ROUTES } from '@config/routes'
+import { useGlobalStore } from '@context/GlobalContext'
 import classNames from 'classnames'
+import { observer } from 'mobx-react-lite'
 import { Link, NavLink } from 'react-router-dom'
 
 import Bag from '../../assets/img/svg/headerBag.svg'
@@ -8,6 +10,8 @@ import User from '../../assets/img/svg/headerUser.svg'
 import styles from './Header.module.scss'
 
 const Header = () => {
+  const { chartStore } = useGlobalStore()
+
   return (
     <div className={`${styles.header} container flex-between-center`}>
       <NavLink to={APP_ROUTES.PRODUCTS} className={styles.header__logo}>
@@ -40,11 +44,20 @@ const Header = () => {
         </NavLink>
       </ul>
       <div className={styles['header-profile']}>
-        <img src={Bag} alt="bag" />
+        <Link to={APP_ROUTES.CHART}>
+          <div className={styles['header-cart']}>
+            <img src={Bag} alt="bag" />
+            {chartStore.totalAmount ? (
+              <div className={styles['header-cart__total']}>
+                {chartStore.totalAmount}
+              </div>
+            ) : null}
+          </div>
+        </Link>
         <img src={User} alt="user" />
       </div>
     </div>
   )
 }
 
-export default Header
+export default observer(Header)

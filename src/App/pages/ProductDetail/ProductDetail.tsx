@@ -1,41 +1,48 @@
 import { useEffect } from 'react'
 
 import { Loader, LoaderSize } from '@components/Loader'
-import { useProductContext } from '@context/ProductContext'
+import {
+  ProductDetailStoreContext,
+  useProductsDetailStore,
+} from '@context/ProductDetailStore'
 import { IProduct } from '@myTypes/product'
+import ProductDetailStore from '@store/ProductDetailStore'
+import { Meta } from '@utils/meta'
+import { useLocalStore } from '@utils/useLocalStore'
+import { observer } from 'mobx-react-lite'
 import { useParams } from 'react-router-dom'
 
 import { ProductInfo, RelatedCards } from './components'
-import styles from './ProductDetail.module.scss'
 
 const ProductDetail = () => {
   const { id } = useParams()
-
-  const { products, currentProduct, loading, error, fetchProductById } =
-    useProductContext()
+  const productDetailStore = useLocalStore(() => new ProductDetailStore())
 
   useEffect(() => {
-    id && fetchProductById(id)
+    id && productDetailStore.getProductById(id)
   }, [id])
 
   return (
-    <div className="container">
-      {loading ? (
-        <Loader size={LoaderSize.l} />
-      ) : (
-        <>
-          <ProductInfo data={currentProduct} />
-          {currentProduct && (
-            <RelatedCards
-              data={products.filter(
-                (item: IProduct) => item.id !== currentProduct.id
-              )}
-            />
-          )}
-        </>
-      )}
-    </div>
+    <ProductDetailStoreContext.Provider value={productDetailStore}>
+      <div className="container">
+        {productDetailStore.meta === Meta.loading ? (
+          <Loader size={LoaderSize.l} />
+        ) : (
+          <>
+            <ProductInfo data={productDetailStore.currentProduct} />
+            {productDetailStore.currentProduct && (
+              <RelatedCards
+                data={productDetailStore.relatedProducts.filter(
+                  (item: IProduct) =>
+                    item.id !== productDetailStore.currentProduct?.id
+                )}
+              />
+            )}
+          </>
+        )}
+      </div>
+    </ProductDetailStoreContext.Provider>
   )
 }
 
-export default ProductDetail
+export default observer(ProductDetail)

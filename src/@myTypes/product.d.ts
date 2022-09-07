@@ -1,3 +1,5 @@
+import rootStore from '@store/RootStore/instance'
+
 export interface IProduct {
   id: number
   title: string
@@ -25,4 +27,8 @@ export type ProductContextType = {
   fetchWithLimit: (limit: number) => void
   fetchProductById: (id: string) => void
   fetchProducts: () => void
+}
+
+export type GlobalContextType = {
+  chartStore: rootStore.chart
 }

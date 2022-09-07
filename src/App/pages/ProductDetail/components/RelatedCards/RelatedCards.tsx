@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import Card from '@components/Card'
-import { useProductContext } from '@context/ProductContext'
 import { IProduct } from '@myTypes/product'
-import { Link } from 'react-router-dom'
 
 import styles from './RelatedCards.module.scss'
 interface Props {
@@ -24,6 +22,7 @@ const RelatedCards: React.FC<Props> = ({ data }) => {
               title={el.title}
               category={el.category}
               content={el.price}
+              key={el.id}
             />
           ))
         ) : (

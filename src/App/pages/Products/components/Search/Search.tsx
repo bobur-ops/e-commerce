@@ -1,30 +1,30 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { getCategories } from '@api/fetchApi'
-import FilterLogo from '@assets/img/svg/filter.svg'
 import searchIcon from '@assets/img/svg/search-normal.svg'
-import { Button, ButtonColor } from '@components/Button'
+import { Button } from '@components/Button'
 import Input from '@components/Input'
 import { MultiDropdown, Option } from '@components/MultiDropdown'
-import { useProductContext } from '@context/ProductContext'
-import { IProduct } from '@myTypes/product'
+import { useProductsStore } from '@context/ProductsContext'
+import { Meta } from '@utils/meta'
+import { observer } from 'mobx-react-lite'
+import { useSearchParams } from 'react-router-dom'
 
 import styles from './Search.module.scss'
 
 const Search = () => {
-  const {
-    fetchProductsByCategory,
-    fetchWithLimit,
-    searchProduct,
-    limit,
-    setHasMore,
-  } = useProductContext()
+  const productStore = useProductsStore()
 
-  const [searchTerm, setSearchTerm] = useState<string>('')
   const [categories, setCategories] = useState<Option[]>([])
   const [selectedCategories, setSelectedCategories] = useState<Option | null>(
     null
   )
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [categoryParams, setCategoryParams] = useSearchParams()
+
+  const searchTerm = searchParams.get('search') || ''
+  const categoryTerm = searchParams.get('category') || ''
 
   useEffect(() => {
     fetchCategories()
@@ -32,9 +32,9 @@ const Search = () => {
 
   useEffect(() => {
     if (selectedCategories !== null) {
-      fetchProductsByCategory(selectedCategories.value)
+      productStore.getProductsByCategory(selectedCategories.value)
     } else {
-      fetchWithLimit(limit)
+      productStore.getProducts()
     }
   }, [selectedCategories])
 
@@ -54,8 +54,11 @@ const Search = () => {
   const switchCategory = useCallback(
     (value: Option) => {
       if (value.key !== selectedCategories?.key) {
+        productStore.toggleHasMore(false)
+
         setSelectedCategories(value)
       } else {
+        productStore.toggleHasMore(true)
         setSelectedCategories(null)
       }
     },
@@ -63,12 +66,13 @@ const Search = () => {
   )
 
   const onChange = (value: string) => {
-    setSearchTerm(value)
-    if (!value) {
-      setHasMore(true)
-      fetchWithLimit(limit)
+    if (value) {
+      productStore.toggleHasMore(false)
+      setSearchParams({ search: value })
     } else {
-      setHasMore(false)
+      productStore.toggleHasMore(true)
+      setSearchParams({})
+      productStore.getProducts()
     }
   }
 
@@ -84,12 +88,11 @@ const Search = () => {
           onChange={(value: string) => onChange(value)}
           className={styles['search-controlls__input']}
           value={searchTerm}
-          type="search"
           placeholder="Search property"
         />
         <Button
           className={styles['search-controlls__button']}
-          onClick={() => searchProduct(searchTerm)}
+          onClick={() => productStore.getProducts()}
         >
           Find Now
         </Button>
