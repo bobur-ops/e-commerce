@@ -13,6 +13,7 @@ import {
   makeObservable,
   observable,
   reaction,
+  toJS,
 } from 'mobx'
 
 import { IChartStore } from './types'
@@ -40,9 +41,14 @@ export default class ChartStore implements IChartStore, ILocalStore {
       decreaseItemCount: action.bound,
     })
     reaction(
-      () => this._chartProducts,
-      (data) => {
-        localStorage.chartProducts = JSON.stringify(linearizeCollection(data))
+      () =>
+        linearizeCollection(this._chartProducts).map(
+          (el: IChartProduct) => el.quantity
+        ),
+      () => {
+        localStorage.chartProducts = JSON.stringify(
+          linearizeCollection(this._chartProducts)
+        )
       }
     )
   }
@@ -89,6 +95,10 @@ export default class ChartStore implements IChartStore, ILocalStore {
     if (this._chartProducts.entities[id].quantity > 1) {
       this._chartProducts.entities[id].quantity -= 1
     }
+  }
+
+  isInChart(id: number): boolean {
+    return this.chartProducts.some((el: IChartProduct) => id === el.id)
   }
 
   destroy(): void {}

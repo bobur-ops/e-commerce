@@ -4,4 +4,5 @@ export interface IChartStore {
   changeProductChart(product: IChartProduct): void
   increaseItemCount(id: number): void
   decreaseItemCount(id: number): void
+  isInChart(id: number): boolean
 }

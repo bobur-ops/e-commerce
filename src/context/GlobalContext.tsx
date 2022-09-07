@@ -13,8 +13,7 @@ type StoreProviderType = {
 export const GlobalContextProvider: React.FC<StoreProviderType> = ({
   children,
 }) => {
-  const chartStore = useLocalStore(() => rootStore.chart)
-
+  const chartStore = rootStore.chart
   return (
     <StoreContext.Provider value={{ chartStore }}>
       {children}
